@@ -72,6 +72,7 @@ export default class FirstScene extends Phaser.Scene{
 
         // var cursors = this.input.keyboard.createCursorKeys();
         
+        this.score = 0;
         
         this.anims.create({
             key: 'left',
@@ -119,54 +120,54 @@ export default class FirstScene extends Phaser.Scene{
 
         });
 
-        this.physics.add.collider(player, platforms);
-        this.physics.add.collider(stars, platforms);
+        this.physics.add.collider(this.player, platforms);
+        this.physics.add.collider(this.stars, platforms);
         
         this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#ffffff' });
 
-        this.physics.add.overlap(player, stars, collectStar, null, this); //this line does not work
+        this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this); //this line does not work
 
         this.bombs = this.physics.add.group();
 
-        this.physics.add.collider(bombs, platforms);
+        this.physics.add.collider(this.bombs, platforms);
 
-        this.physics.add.collider(player, bombs, hitBomb, null, this);
+        this.physics.add.collider(this.player, this.bombs, this.hitBomb, null, this);
     
     }
 
     update(){
 
-        if (cursors.left.isDown)
+        if (this.cursors.left.isDown)
         {
-            player.setVelocityX(-160);
+            this.player.setVelocityX(-160);
 
-            player.anims.play('left', true);
+            this.player.anims.play('left', true);
         }
-        else if (cursors.right.isDown)
+        else if (this.cursors.right.isDown)
         {
-            player.setVelocityX(160);
+            this.player.setVelocityX(160);
 
-            player.anims.play('right', true);
+            this.player.anims.play('right', true);
         }
         else
         {
-            player.setVelocityX(0);
+            this.player.setVelocityX(0);
 
-            player.anims.play('turn');
+            this.player.anims.play('turn');
         }
 
-        if (cursors.up.isDown && player.body.touching.down)
+        if (this.cursors.up.isDown && this.player.body.touching.down)
         {
-            player.setVelocityY(-330);
+            this.player.setVelocityY(-330);
         }
     }
 
     collectStar (player, star){
         star.disableBody(true, true);
-        score += 10;
-        scoreText.setText('Score: ' + score);
-        if (stars.countActive(true) === 0){
-            stars.children.iterate(function (child) {
+        this.score += 10;
+        this.scoreText.setText('Score: ' + this.score);
+        if (this.stars.countActive(true) === 0){
+            this.stars.children.iterate(function (child) {
                 child.enableBody(true, child.x, 0, true, true);
             });
             var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
