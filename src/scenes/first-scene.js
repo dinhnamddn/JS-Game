@@ -106,6 +106,8 @@ export default class FirstScene extends Phaser.Scene{
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
 
+        this.cameras.main.startFollow(this.player);
+
         this.cursors = this.input.keyboard.createCursorKeys();
         
         this.stars = this.physics.add.group({

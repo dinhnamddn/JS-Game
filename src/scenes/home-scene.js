@@ -30,7 +30,7 @@ export default class HomeScene extends Phaser.Scene{
 
     update(){
         if(this.input.activePointer.leftButtonDown()) {
-            this.scene.start('FirstScene');
+            this.scene.start('GamePlay');
         }
     }
 }
