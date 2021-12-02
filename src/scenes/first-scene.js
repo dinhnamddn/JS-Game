@@ -39,38 +39,6 @@ export default class FirstScene extends Phaser.Scene{
         // platforms.create(760, 0,'ground');
         platforms.create(380, 30,'ground1');
         platforms.create(500, 50,'ground1');
-
-        // this.anims.create({
-        //     key: 'left',
-        //     frames: this.anims.generateFrameNumbers('player', { start: 0, end: 3}),
-        //     repeat: -1,
-        //     frameRates: 10
-        // })
-
-        // this.anims.create({
-        //     key: 'turn',
-        //     frames: this.anims.generateFrameNumbers('player', { start: 8, end: 11}),
-        //     repeat: -1,
-        //     frameRates: 5
-        // })
-        // this.anims.create({
-        //     key: 'right',
-        //     frames: this.anims.generateFrameNumbers('player', { start: 16, end: 19}),
-        //     repeat: -1,
-        //     frameRates: 10
-        // })
-        // //player
-        // var player = this.physics.add.sprite(465, 140).setScale(2).setOrigin(0, 0).play('turn');
-        // this.physics.add.collider(player, platforms);
-
-        // this.cursors = this.input.keyboard.addKeys({
-        //     'up': Phaser.Input.Keyboard.KeyCodes.W,
-        //     'down': Phaser.Input.Keyboard.KeyCodes.S,
-        //     'left': Phaser.Input.Keyboard.KeyCodes.A,
-        //     'right': Phaser.Input.Keyboard.KeyCodes.D,
-        // })
-
-        // var cursors = this.input.keyboard.createCursorKeys();
         
         this.score = 0;
         
