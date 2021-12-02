@@ -6,7 +6,7 @@ export default class HomeScene extends Phaser.Scene{
     }
 
     preload(){
-        this.load.image('background', './assets/circus.png');
+        this.load.image('background', './assets/trapoutdoor2.png');
         this.load.image('button', './assets/button.png');
         this.load.spritesheet('player', './assets/player.png', {frameWidth: 16, frameHeight: 32});
         this.load.audio('background-sound', './assets/backgroundsound.mp3');
@@ -15,7 +15,7 @@ export default class HomeScene extends Phaser.Scene{
     create(){
         this.add.image(0, 0, 'background').setScale(2).setOrigin(0, 0);
         this.bg_sound = this.sound.add('background-sound');
-        this.bg_sound.play({volume: 0.2, loop: true});
+        this.bg_sound.play({volume: 0.03, loop: true});
 
         this.playButton = this.add.image(300, 120, 'button').setScale(0.5).setOrigin(0, 0);
         this.tutorialButton = this.add.image(505, 120, 'button').setScale(0.5).setOrigin(0, 0);
@@ -27,9 +27,10 @@ export default class HomeScene extends Phaser.Scene{
             repeat: -1
         })
 
-        this.add.sprite(382, 275, null).setScale(3).play('anims-player');
-        this.add.sprite(482, 275, null).setScale(3).play('anims-player');
-        this.add.sprite(582, 275, null).setScale(3).play('anims-player');
+        this.add.sprite(382, 295, null).setScale(3).play('anims-player');
+        this.add.sprite(482, 295, null).setScale(3).play('anims-player');
+        this.add.sprite(582, 295, null).setScale(3).play('anims-player');
+
         this.add.text(350, 146, 'PLAY', {font: 'bold 20px sana-serif', fill: '#ffffff', align: 'center'});
         this.add.text(530, 146, 'TUTORIAL', {font: 'bold 20px sana-serif', fill: '#ffffff', align: 'center'});
 
@@ -40,7 +41,8 @@ export default class HomeScene extends Phaser.Scene{
         })
         this.tutorialButton.setInteractive();
         this.tutorialButton.on('pointerdown', ()=>{
-            console.log('hello')
+            this.bg_sound.stop();
+            this.scene.start('TutorialScene');
         })
     }
 }
