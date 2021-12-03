@@ -11,6 +11,7 @@ export class GamePlay extends Phaser.Scene {
         this.load.image('image.bg', 'assets/circus.png');
 
         this.load.spritesheet('spritesheet.player', './assets/player.png', { frameWidth: 16, frameHeight: 32 });
+        this.load.spritesheet('spritesheet.player.sitDown', './assets/sitdown.png', {frameWidth: 16, frameHeight: 32});
     }
 
     create() {
@@ -38,6 +39,13 @@ export class GamePlay extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
+
+        this.anims.create({
+            key: 'anims.player-sitDown',
+            frames: [{key: 'spritesheet.player.sitDown', frame: 2}],
+            repeat: 0,
+            frameRate: 10
+        })
 
 
         // tilemap
@@ -73,13 +81,15 @@ export class GamePlay extends Phaser.Scene {
         } 
         if(this.cursor.up.isDown && this.player.body.onFloor()) {
             vector_velocity.y -= this.player.speed * 2.5;
-        }
+        } 
 
         if (vector_velocity.x > 0) this.player.play("anims.player-right", true);
         else if (vector_velocity.x < 0) this.player.play("anims.player-left", true);
 
         if (vector_velocity.x * vector_velocity.x + vector_velocity.y * vector_velocity.y > 0) {
 
+        } else if (this.cursor.down.isDown && this.player.body.onFloor()) {
+            this.player.play('anims.player-sitDown', true);
         } else {
             this.player.play("anims.player-idle", true);
         }
