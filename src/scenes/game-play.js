@@ -55,7 +55,7 @@ export class GamePlay extends Phaser.Scene {
 
         this.cameras.main.startFollow(this.player);
 
-        this.cursor = this.input.keyboard.createCursorKeys();
+        this.cursors = this.input.keyboard.createCursorKeys();
         //trap
         this.trap1 = this.physics.add.sprite(350,-300,'bomb');
         this.trap1.disableBody();
@@ -73,22 +73,26 @@ export class GamePlay extends Phaser.Scene {
             y: 0
         };
 
-        if (this.cursor.left.isDown) vector_velocity.x -= this.player.speed;
-        if (this.cursor.right.isDown) vector_velocity.x += this.player.speed;
-        if (this.cursor.up.isDown) vector_velocity.y -= this.player.speed;
-
-        if (vector_velocity.x > 0) this.player.play("anims.player-right", true);
-        else if (vector_velocity.x < 0) this.player.play("anims.player-left", true);
-
-        if (vector_velocity.x * vector_velocity.x + vector_velocity.y * vector_velocity.y > 0) {
-        } else {
+        if (this.cursors.left.isDown)
+        {
+            this.player.setVelocityX(-160);
+            this.player.play("anims.player-left", true);
+        }
+        else if (this.cursors.right.isDown)
+        {
+            this.player.setVelocityX(160);
+            this.player.play("anims.player-right", true);
+        }
+        else
+        {
+            this.player.setVelocityX(0);
             this.player.play("anims.player-idle", true);
         }
 
-        this.player.setVelocityX(vector_velocity.x);
-        if (vector_velocity.y != 0)
-            this.player.setVelocityY(vector_velocity.y);
-
+        if (this.cursors.up.isDown && this.player.body.onFloor())
+        {
+            this.player.setVelocityY(-200);
+        }
         this.bg.setPosition(this.player.x, this.player.y);
         if(250<this.player.x&&this.player.x<320&&this.player.y<-30){
             this.bomb.visible = true;
@@ -97,7 +101,6 @@ export class GamePlay extends Phaser.Scene {
             this.trap1.visible = true;
             this.trap1.enableBody();
         }
-        // console.log(this.player.x+" "+this.player.y)
     }
     hitBomb(player, bomb){
         player.setTint(0xff0000);
