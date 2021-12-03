@@ -46,7 +46,7 @@ export class GamePlay extends Phaser.Scene {
 
         const platform = this.map.createLayer("platform", tileset).setCollisionByProperty({ collides: true });
         const sea = this.map.createLayer("sea", tileset).setCollisionByProperty({ collides: true });
-
+        
         // player
         this.player = this.physics.add.sprite(20, -20, null);
         this.player.speed = 100;
@@ -66,9 +66,14 @@ export class GamePlay extends Phaser.Scene {
             y: 0
         };
 
-        if (this.cursor.left.isDown) vector_velocity.x -= this.player.speed;
-        if (this.cursor.right.isDown) vector_velocity.x += this.player.speed;
-        if (this.cursor.up.isDown) vector_velocity.y -= this.player.speed;
+        if (this.cursor.left.isDown){
+            vector_velocity.x -= this.player.speed;
+        } else if (this.cursor.right.isDown) {
+            vector_velocity.x += this.player.speed;
+        } 
+        if(this.cursor.up.isDown && this.player.body.onFloor()) {
+            vector_velocity.y -= this.player.speed * 2.5;
+        }
 
         if (vector_velocity.x > 0) this.player.play("anims.player-right", true);
         else if (vector_velocity.x < 0) this.player.play("anims.player-left", true);
