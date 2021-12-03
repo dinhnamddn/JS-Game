@@ -11,6 +11,7 @@ export class GamePlay extends Phaser.Scene {
         this.load.image('image.bg', 'assets/circus.png');
         this.load.image('bomb','assets/bomb.png')
         this.load.spritesheet('spritesheet.player', './assets/player.png', { frameWidth: 16, frameHeight: 32 });
+        this.load.spritesheet('spritesheet.player.sitDown', './assets/sitdown.png', {frameWidth: 16, frameHeight: 32});
     }
     create() {
         // background
@@ -37,7 +38,14 @@ export class GamePlay extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
-        
+
+        this.anims.create({
+            key: 'anims.player-sitDown',
+            frames: [{key: 'spritesheet.player.sitDown', frame: 2}],
+            repeat: 0,
+            frameRate: 10
+        })
+
 
         // tilemap
         this.map = this.add.tilemap("tilemap.map-01");
