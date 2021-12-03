@@ -4,16 +4,15 @@ export class GamePlay extends Phaser.Scene {
             key: "GamePlay"
         })
     }
-
+    
     preload() {
         this.load.tilemapTiledJSON("tilemap.map-01", "./assets/map-01.json");
         this.load.image("image.tileset", "./assets/tileset.png");
         this.load.image('image.bg', 'assets/circus.png');
-
+        this.load.image('bomb','assets/bomb.png')
         this.load.spritesheet('spritesheet.player', './assets/player.png', { frameWidth: 16, frameHeight: 32 });
         this.load.spritesheet('spritesheet.player.sitDown', './assets/sitdown.png', {frameWidth: 16, frameHeight: 32});
     }
-
     create() {
         // background
         this.bg = this.add.image(0, 0, "image.bg").setScale(2);
@@ -51,7 +50,6 @@ export class GamePlay extends Phaser.Scene {
         // tilemap
         this.map = this.add.tilemap("tilemap.map-01");
         const tileset = this.map.addTilesetImage("tileset", "image.tileset");
-
         const platform = this.map.createLayer("platform", tileset).setCollisionByProperty({ collides: true });
         const sea = this.map.createLayer("sea", tileset).setCollisionByProperty({ collides: true });
         
@@ -66,6 +64,15 @@ export class GamePlay extends Phaser.Scene {
         this.cameras.main.startFollow(this.player);
 
         this.cursor = this.input.keyboard.createCursorKeys();
+        //trap
+        this.trap1 = this.physics.add.sprite(350,-300,'bomb');
+        this.trap1.disableBody();
+        this.trap1.visible = false;
+        this.physics.add.collider(this.trap1, platform);
+        this.physics.add.collider(this.player, this.trap1, this.hitBomb, null, this);
+        this.bomb = this.physics.add.staticGroup().create(300,-50,'bomb');
+        this.bomb.visible = false
+        this.physics.add.collider(this.player, this.bomb, this.hitBomb, null, this); 
     }
 
     update() {
@@ -95,10 +102,24 @@ export class GamePlay extends Phaser.Scene {
         }
 
         this.player.setVelocityX(vector_velocity.x);
-
         if (vector_velocity.y != 0)
             this.player.setVelocityY(vector_velocity.y);
 
         this.bg.setPosition(this.player.x, this.player.y);
+        if(250<this.player.x&&this.player.x<320&&this.player.y<-30){
+            this.bomb.visible = true;
+        }
+        if(this.player.x>306){
+            this.trap1.visible = true;
+            this.trap1.enableBody();
+        }
+        // console.log(this.player.x+" "+this.player.y)
     }
+    hitBomb(player, bomb){
+        player.setTint(0xff0000);
+        bomb.visible = true
+        this.physics.pause();
+        alert("Uoa");
+        this.scene.start('HomeScene');
+    };
 }
