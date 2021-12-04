@@ -85,14 +85,14 @@ export class GamePlay extends Phaser.Scene {
         {
             this.player.setVelocityX(-160);
             this.player.play("anims.player-left", true);
-        }
-        else if (this.cursors.right.isDown)
+        } else if (this.cursors.right.isDown)
         {
             this.player.setVelocityX(160);
             this.player.play("anims.player-right", true);
-        }
-        else
+        } else if (this.cursors.down.isDown && this.player.body.onFloor())
         {
+            this.player.play("anims.player-sitDown", true);
+        } else {
             this.player.setVelocityX(0);
             this.player.play("anims.player-idle", true);
         }
@@ -100,7 +100,8 @@ export class GamePlay extends Phaser.Scene {
         if (this.cursors.up.isDown && this.player.body.onFloor())
         {
             this.player.setVelocityY(-280);
-        }
+        } 
+        
         this.bg.setPosition(this.player.x, this.player.y);
         if(250<this.player.x&&this.player.x<320&&this.player.y<-30){
             this.bomb.visible = true;
