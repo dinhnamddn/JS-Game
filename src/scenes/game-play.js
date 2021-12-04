@@ -99,7 +99,7 @@ export class GamePlay extends Phaser.Scene {
 
         if (this.cursors.up.isDown && this.player.body.onFloor())
         {
-            this.player.setVelocityY(-200);
+            this.player.setVelocityY(-280);
         }
         this.bg.setPosition(this.player.x, this.player.y);
         if(250<this.player.x&&this.player.x<320&&this.player.y<-30){
