@@ -31,8 +31,8 @@ export default class HomeScene extends Phaser.Scene{
         this.add.sprite(482, 295, null).setScale(3).play('anims-player');
         this.add.sprite(582, 295, null).setScale(3).play('anims-player');
 
-        this.add.text(350, 146, 'PLAY', {font: 'bold 20px sana-serif', fill: '#ffffff', align: 'center'});
-        this.add.text(530, 146, 'TUTORIAL', {font: 'bold 20px sana-serif', fill: '#ffffff', align: 'center'});
+        this.add.text(355, 145, 'PLAY', {font: 'bold 22px consolas', fill: '#ffffff', align: 'center'});
+        this.add.text(535, 145, 'TUTORIAL', {font: 'bold 22px consolas', fill: '#ffffff', align: 'center'});
 
         this.playButton.setInteractive();
         this.playButton.on('pointerdown', ()=>{
