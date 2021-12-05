@@ -64,6 +64,8 @@ export class GamePlay extends Phaser.Scene {
         this.cameras.main.startFollow(this.player);
 
         this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.add.text(-25, -150, '>>>>', {font: 'bold 50px consolas', fill: '#009DAE', align: 'center'}).setRotation(0);
         //trap
         this.trap1 = this.physics.add.sprite(350,-300,'bomb');
         this.trap1.disableBody();
