@@ -51,6 +51,13 @@ export class GamePlay extends Phaser.Scene {
             frameRate: 10
         })
 
+        this.anims.create({
+            key: 'player.dead',
+            frames: [{key: 'spritesheet.player', frame: 8}],
+            frameRate: 10,
+            repeat: 0
+        })
+
 
         // tilemap
         this.map = this.add.tilemap("tilemap.map-01");
@@ -83,11 +90,6 @@ export class GamePlay extends Phaser.Scene {
     }
 
     update() {
-        let vector_velocity = {
-            x: 0,
-            y: 0
-        };
-
         if (this.cursors.left.isDown) {
             this.player.setVelocityX(-160);
             this.player.play("anims.player-left", true);
@@ -123,9 +125,9 @@ export class GamePlay extends Phaser.Scene {
     };
 
     gameOver(){
-        this.player.setTint(0xff0000);
-        this.deadSound.play();
         this.physics.pause();
+        this.player.play('player.dead', true).setTint(0xff0000);
+        this.deadSound.play();
 
         this.playAgain = this.add.image(this.player.x - 170, this.player.y - 15, 'button').setScale(0.5).setOrigin(0, 0);
         this.goToMenu = this.add.image(this.player.x + 45, this.player.y - 15, 'button').setScale(0.5).setOrigin(0, 0);
