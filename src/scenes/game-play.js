@@ -9,6 +9,7 @@ export class GamePlay extends Phaser.Scene {
         this.load.tilemapTiledJSON("tilemap.map-01", "./assets/map-01.json");
         this.load.image("image.tileset", "./assets/tileset.png");
         this.load.image('image.bg', 'assets/circus.png');
+        this.load.image('button', './assets/button.png');
         this.load.image('bomb','assets/bomb.png')
         this.load.spritesheet('spritesheet.player', './assets/player.png', { frameWidth: 16, frameHeight: 32 });
         this.load.spritesheet('spritesheet.player.sitDown', './assets/sitdown.png', {frameWidth: 16, frameHeight: 32});
@@ -83,21 +84,18 @@ export class GamePlay extends Phaser.Scene {
             y: 0
         };
 
-        if (this.cursors.left.isDown)
-        {
+        if (this.cursors.left.isDown) {
             this.player.setVelocityX(-160);
             this.player.play("anims.player-left", true);
-        } else if (this.cursors.right.isDown)
-        {
-            this.player.setVelocityX(160);
-            this.player.play("anims.player-right", true);
-        } else if (this.cursors.down.isDown && this.player.body.onFloor())
-        {
-            this.player.play("anims.player-sitDown", true);
-        } else {
-            this.player.setVelocityX(0);
-            this.player.play("anims.player-idle", true);
-        }
+            } else if (this.cursors.right.isDown) {
+                this.player.setVelocityX(160);
+                this.player.play("anims.player-right", true);
+                } else if (this.cursors.down.isDown && this.player.body.onFloor()) {
+                    this.player.play("anims.player-sitDown", true);
+                    } else {
+                        this.player.setVelocityX(0);
+                        this.player.play("anims.player-idle", true);
+                    }
 
         if (this.cursors.up.isDown && this.player.body.onFloor())
         {
@@ -117,7 +115,34 @@ export class GamePlay extends Phaser.Scene {
         player.setTint(0xff0000);
         bomb.visible = true
         this.physics.pause();
-        alert("Uoa");
-        this.scene.start('HomeScene');
+        this.gameOver();
     };
+
+    gameOver(){
+        this.player.setTint(0xff0000);
+        this.physics.pause();
+        this.playAgain = this.add.image(this.player.x - 170, this.player.y - 15, 'button').setScale(0.5).setOrigin(0, 0);
+        this.goToMenu = this.add.image(this.player.x + 45, this.player.y - 15, 'button').setScale(0.5).setOrigin(0, 0);
+        this.add.text(this.player.x - 150, this.player.y + 10, 'PLAY AGAIN', {font: 'bold 20px consolas', fill: '#ffffff', align: 'center'});
+        this.add.text(this.player.x + 100, this.player.y + 10, 'HOME', {font: 'bold 20px consolas', fill: '#ffffff', align: 'center'});
+        this.add.text(this.player.x - 145, this.player.y - 120, ' NGU!!! ', 
+            { 
+                font: 'bold 70px consolas',
+                backgroundColor: '#F90716', 
+                fill: '#ffffff', 
+                padding: 5,
+                align: 'center'
+            }
+        );
+        this.clickButton(this.playAgain, 'GamePlay');
+        this.clickButton(this.goToMenu, 'HomeScene');
+    }
+
+    clickButton(button, scene){
+        button.setInteractive();
+        button.on('pointerdown', ()=>{
+            // this.bg_sound.stop();
+            this.scene.start(scene);
+        })
+    }
 }
