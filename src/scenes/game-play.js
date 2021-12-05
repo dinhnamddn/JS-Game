@@ -13,10 +13,14 @@ export class GamePlay extends Phaser.Scene {
         this.load.image('bomb','assets/bomb.png')
         this.load.spritesheet('spritesheet.player', './assets/player.png', { frameWidth: 16, frameHeight: 32 });
         this.load.spritesheet('spritesheet.player.sitDown', './assets/sitdown.png', {frameWidth: 16, frameHeight: 32});
+        this.load.audio('deadSound', './assets/movie_1.mp3');
     }
     create() {
         // background
         this.bg = this.add.image(0, 0, "image.bg").setScale(2);
+
+        //sound
+        this.deadSound = this.sound.add('deadSound');
 
         // create animations
         this.anims.create({
@@ -120,9 +124,12 @@ export class GamePlay extends Phaser.Scene {
 
     gameOver(){
         this.player.setTint(0xff0000);
+        this.deadSound.play();
         this.physics.pause();
+
         this.playAgain = this.add.image(this.player.x - 170, this.player.y - 15, 'button').setScale(0.5).setOrigin(0, 0);
         this.goToMenu = this.add.image(this.player.x + 45, this.player.y - 15, 'button').setScale(0.5).setOrigin(0, 0);
+        
         this.add.text(this.player.x - 150, this.player.y + 10, 'PLAY AGAIN', {font: 'bold 20px consolas', fill: '#ffffff', align: 'center'});
         this.add.text(this.player.x + 100, this.player.y + 10, 'HOME', {font: 'bold 20px consolas', fill: '#ffffff', align: 'center'});
         this.add.text(this.player.x - 145, this.player.y - 120, ' NGU!!! ', 
@@ -134,6 +141,7 @@ export class GamePlay extends Phaser.Scene {
                 align: 'center'
             }
         );
+        
         this.clickButton(this.playAgain, 'GamePlay');
         this.clickButton(this.goToMenu, 'HomeScene');
     }
