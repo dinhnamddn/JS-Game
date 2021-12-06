@@ -5,9 +5,9 @@ export class TutorialScene extends Phaser.Scene {
         })
     }
     preload(){
-        // this.load.image('button', './assets/button.png');
-        // this.load.image('background2', './assets/trapoutdoor2.png');
+        
     }
+
     create(){
         this.add.image(0, 0, 'background').setScale(2).setOrigin(0, 0);
         

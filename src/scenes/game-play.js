@@ -7,20 +7,27 @@ export class GamePlay extends Phaser.Scene {
     
     preload() {
         this.load.tilemapTiledJSON("tilemap.map-01", "./assets/map-01.json");
+
         this.load.image("image.tileset", "./assets/tileset.png");
         this.load.image('image.bg', 'assets/circus.png');
-        this.load.image('button', './assets/button.png');
-        this.load.image('bomb','assets/bomb.png')
+        this.load.image('bomb','assets/bomb.png');
+
         this.load.spritesheet('spritesheet.player', './assets/player.png', {frameWidth: 16, frameHeight: 32});
         this.load.spritesheet('spritesheet.player.sitDown', './assets/sitdown.png', {frameWidth: 16, frameHeight: 32});
+
         this.load.audio('deadSound', './assets/movie_1.mp3');
+        this.load.audio('jumpSound', './assets/jump.wav');
+        this.load.audio('waterSound', './assets/water.wav');
     }
+
     create() {
         // background
-        this.bg = this.add.image(0, 0, "image.bg").setScale(2);
+        this.background = this.add.image(0, 0, "image.bg").setScale(2);
 
         //sound
         this.deadSound = this.sound.add('deadSound');
+        this.jumpSound = this.sound.add('jumpSound');
+        this.waterSound = this.sound.add('waterSound');
 
         // create animations
         this.anims.create({
@@ -66,11 +73,12 @@ export class GamePlay extends Phaser.Scene {
         const sea = this.map.createLayer("sea", tileset).setCollisionByProperty({ collides: true });
         
         // player
-        this.player = this.physics.add.sprite(20, -90, null).setScale(2);
+        this.player = this.physics.add.sprite(20, -90, 'spritesheet.player').setScale(2).refreshBody();
 
         this.physics.add.collider(this.player, platform);
+        this.physics.add.collider(this.player, sea, this.hitSea, null, this);
 
-        this.physics.add.overlap(this.player, sea, () => console.log("da va cham"));
+        // this.physics.add.overlap(this.player, sea, () => console.log("da va cham"));
 
         this.cameras.main.startFollow(this.player);
 
@@ -84,54 +92,67 @@ export class GamePlay extends Phaser.Scene {
         this.trap1.visible = false;
         this.physics.add.collider(this.trap1, platform);
         this.physics.add.collider(this.player, this.trap1, this.hitTrap, null, this);
+
         this.bomb = this.physics.add.staticGroup().create(300, -50, 'bomb');
         this.bomb.visible = false
         this.physics.add.collider(this.player, this.bomb, this.hitTrap, null, this); 
     }
 
     update() {
+        if(this.player.y > 400) {
+            this.gameOver();
+        }
+
         //player's movement
         let player_velocity = 140;
 
         if (this.cursors.left.isDown) {
             this.player.setVelocityX(-1 * player_velocity);
             this.player.play("anims.player-left", true);
-            } else if (this.cursors.right.isDown) {
-                this.player.setVelocityX(player_velocity);
-                this.player.play("anims.player-right", true);
-                } else if (this.cursors.down.isDown && this.player.body.onFloor()) {
-                    this.player.play("anims.player-sitDown", true);
-                    } else {
-                        this.player.setVelocityX(0);
-                        this.player.play("anims.player-idle", true);
-                    }
+        } else if (this.cursors.right.isDown) {
+            this.player.setVelocityX(player_velocity);
+            this.player.play("anims.player-right", true);
+        } else if (this.cursors.down.isDown && this.player.body.onFloor()) {
+            this.player.play("anims.player-sitDown", true);
+        } else {
+            this.player.setVelocityX(0);
+            this.player.play("anims.player-idle", true);
+        }
 
         if (this.cursors.up.isDown && this.player.body.onFloor())
         {
+            this.jumpSound.play();
             this.player.setVelocityY(-2 * player_velocity);
         } 
         
         //background's movement
-        this.bg.setPosition(this.player.x, this.player.y);
+        this.background.setPosition(this.player.x, this.player.y);
+
+        //trap
         if(250 < this.player.x && this.player.x < 320 && this.player.y < -30){
             this.bomb.visible = true;
         }
 
-        //trap
         if(this.player.x > 306){
             this.trap1.visible = true;
             this.trap1.enableBody();
         }
     }
+
     hitTrap(player, trap){
-        trap.visible = true
+        trap.visible = true;
+        this.deadSound.play();
         this.gameOver();
     };
+
+    hitSea(){
+        this.waterSound.play();
+        this.gameOver();
+    }
 
     gameOver(){
         this.physics.pause();
         this.player.play('player.dead', true).setTint(0xff0000);
-        this.deadSound.play();
 
         this.playAgain = this.add.image(this.player.x - 190, this.player.y + 15, 'button').setScale(0.5).setOrigin(0, 0);
         this.goToMenu = this.add.image(this.player.x + 32, this.player.y + 15, 'button').setScale(0.5).setOrigin(0, 0);
