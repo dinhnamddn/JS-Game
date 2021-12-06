@@ -1,5 +1,4 @@
 import HomeScene from "./scenes/home-scene.js";
-import FirstScene from "./scenes/first-scene.js";
 import { GamePlay } from "./scenes/game-play.js";
 import { TutorialScene } from "./scenes/tutorial-scene.js";
 const config = {
@@ -11,9 +10,9 @@ const config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 300 },
-            debug: false
+            debug: true
         }
     },
-    scene: [HomeScene, FirstScene, GamePlay, TutorialScene]
+    scene: [HomeScene, GamePlay, TutorialScene]
 };
 var game = new Phaser.Game(config);
