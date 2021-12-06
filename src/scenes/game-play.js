@@ -78,6 +78,7 @@ export class GamePlay extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
 
         this.add.text(-25, -150, '>>>>', {font: 'bold 50px consolas', fill: '#009DAE', align: 'center'}).setRotation(0);
+        
         //trap
         this.trap1 = this.physics.add.sprite(350,-300,'bomb');
         this.trap1.disableBody();
@@ -90,11 +91,14 @@ export class GamePlay extends Phaser.Scene {
     }
 
     update() {
+        //player move
+        let player_velocity = 140;
+
         if (this.cursors.left.isDown) {
-            this.player.setVelocityX(-160);
+            this.player.setVelocityX(-1 * player_velocity);
             this.player.play("anims.player-left", true);
             } else if (this.cursors.right.isDown) {
-                this.player.setVelocityX(160);
+                this.player.setVelocityX(player_velocity);
                 this.player.play("anims.player-right", true);
                 } else if (this.cursors.down.isDown && this.player.body.onFloor()) {
                     this.player.play("anims.player-sitDown", true);
@@ -105,13 +109,16 @@ export class GamePlay extends Phaser.Scene {
 
         if (this.cursors.up.isDown && this.player.body.onFloor())
         {
-            this.player.setVelocityY(-280);
+            this.player.setVelocityY(-2 * player_velocity);
         } 
         
+        //background move
         this.bg.setPosition(this.player.x, this.player.y);
         if(250<this.player.x&&this.player.x<320&&this.player.y<-30){
             this.bomb.visible = true;
         }
+
+        //trap
         if(this.player.x>306){
             this.trap1.visible = true;
             this.trap1.enableBody();
@@ -151,7 +158,6 @@ export class GamePlay extends Phaser.Scene {
     clickButton(button, scene){
         button.setInteractive();
         button.on('pointerdown', ()=>{
-            // this.bg_sound.stop();
             this.scene.start(scene);
         })
     }
