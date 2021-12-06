@@ -9,11 +9,12 @@ export class GamePlay extends Phaser.Scene {
         this.load.tilemapTiledJSON("tilemap.map-01", "./assets/map-01.json");
         this.load.image("image.tileset", "./assets/tileset.png");
         this.load.image('image.bg', 'assets/circus.png');
-        this.load.image('button', './assets/button.png');
         this.load.image('bomb','assets/bomb.png')
         this.load.spritesheet('spritesheet.player', './assets/player.png', {frameWidth: 16, frameHeight: 32});
         this.load.spritesheet('spritesheet.player.sitDown', './assets/sitdown.png', {frameWidth: 16, frameHeight: 32});
         this.load.audio('deadSound', './assets/movie_1.mp3');
+        this.load.audio('jumpSound', './assets/getscore.mp3');
+        // this.load.image('button', './assets/button.png');
     }
     create() {
         // background
@@ -21,6 +22,7 @@ export class GamePlay extends Phaser.Scene {
 
         //sound
         this.deadSound = this.sound.add('deadSound');
+        this.jumpSound = this.sound.add('jumpSound');
 
         // create animations
         this.anims.create({
@@ -108,6 +110,7 @@ export class GamePlay extends Phaser.Scene {
 
         if (this.cursors.up.isDown && this.player.body.onFloor())
         {
+            this.jumpSound.play();
             this.player.setVelocityY(-2 * player_velocity);
         } 
         
