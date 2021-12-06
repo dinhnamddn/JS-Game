@@ -11,7 +11,7 @@ export class GamePlay extends Phaser.Scene {
         this.load.image('image.bg', 'assets/circus.png');
         this.load.image('button', './assets/button.png');
         this.load.image('bomb','assets/bomb.png')
-        this.load.spritesheet('spritesheet.player', './assets/player.png', { frameWidth: 16, frameHeight: 32 });
+        this.load.spritesheet('spritesheet.player', './assets/player.png', {frameWidth: 16, frameHeight: 32});
         this.load.spritesheet('spritesheet.player.sitDown', './assets/sitdown.png', {frameWidth: 16, frameHeight: 32});
         this.load.audio('deadSound', './assets/movie_1.mp3');
     }
@@ -67,7 +67,6 @@ export class GamePlay extends Phaser.Scene {
         
         // player
         this.player = this.physics.add.sprite(20, -90, null).setScale(2);
-        this.player.speed = 100;
 
         this.physics.add.collider(this.player, platform);
 
@@ -80,18 +79,18 @@ export class GamePlay extends Phaser.Scene {
         this.add.text(-25, -150, '>>>>', {font: 'bold 50px consolas', fill: '#009DAE', align: 'center'}).setRotation(0);
         
         //trap
-        this.trap1 = this.physics.add.sprite(350,-300,'bomb');
+        this.trap1 = this.physics.add.sprite(350, -300, 'bomb');
         this.trap1.disableBody();
         this.trap1.visible = false;
         this.physics.add.collider(this.trap1, platform);
-        this.physics.add.collider(this.player, this.trap1, this.hitBomb, null, this);
-        this.bomb = this.physics.add.staticGroup().create(300,-50,'bomb');
+        this.physics.add.collider(this.player, this.trap1, this.hitTrap, null, this);
+        this.bomb = this.physics.add.staticGroup().create(300, -50, 'bomb');
         this.bomb.visible = false
-        this.physics.add.collider(this.player, this.bomb, this.hitBomb, null, this); 
+        this.physics.add.collider(this.player, this.bomb, this.hitTrap, null, this); 
     }
 
     update() {
-        //player move
+        //player's movement
         let player_velocity = 140;
 
         if (this.cursors.left.isDown) {
@@ -112,22 +111,20 @@ export class GamePlay extends Phaser.Scene {
             this.player.setVelocityY(-2 * player_velocity);
         } 
         
-        //background move
+        //background's movement
         this.bg.setPosition(this.player.x, this.player.y);
-        if(250<this.player.x&&this.player.x<320&&this.player.y<-30){
+        if(250 < this.player.x && this.player.x < 320 && this.player.y < -30){
             this.bomb.visible = true;
         }
 
         //trap
-        if(this.player.x>306){
+        if(this.player.x > 306){
             this.trap1.visible = true;
             this.trap1.enableBody();
         }
     }
-    hitBomb(player, bomb){
-        player.setTint(0xff0000);
-        bomb.visible = true
-        this.physics.pause();
+    hitTrap(player, trap){
+        trap.visible = true
         this.gameOver();
     };
 
@@ -136,21 +133,20 @@ export class GamePlay extends Phaser.Scene {
         this.player.play('player.dead', true).setTint(0xff0000);
         this.deadSound.play();
 
-        this.playAgain = this.add.image(this.player.x - 170, this.player.y - 15, 'button').setScale(0.5).setOrigin(0, 0);
-        this.goToMenu = this.add.image(this.player.x + 45, this.player.y - 15, 'button').setScale(0.5).setOrigin(0, 0);
-        
-        this.add.text(this.player.x - 150, this.player.y + 10, 'PLAY AGAIN', {font: 'bold 20px consolas', fill: '#ffffff', align: 'center'});
-        this.add.text(this.player.x + 100, this.player.y + 10, 'HOME', {font: 'bold 20px consolas', fill: '#ffffff', align: 'center'});
-        this.add.text(this.player.x - 145, this.player.y - 120, ' NGU!!! ', 
-            { 
-                font: 'bold 70px consolas',
-                backgroundColor: '#F90716', 
-                fill: '#ffffff', 
-                padding: 5,
-                align: 'center'
-            }
-        );
-        
+        this.playAgain = this.add.image(this.player.x - 190, this.player.y + 15, 'button').setScale(0.5).setOrigin(0, 0);
+        this.goToMenu = this.add.image(this.player.x + 32, this.player.y + 15, 'button').setScale(0.5).setOrigin(0, 0);
+                
+        this.add.text(this.player.x - 170, this.player.y + 40, 'PLAY AGAIN', {font: 'bold 20px consolas', fill: '#ffffff', align: 'center'});
+        this.add.text(this.player.x + 87, this.player.y + 40, 'HOME', {font: 'bold 20px consolas', fill: '#ffffff', align: 'center'});
+        this.add.text(this.player.x - 120, this.player.y - 120, 'STUPID', 
+        { 
+            font: 'bold 70px consolas',
+            backgroundColor: '#F90716', 
+            fill: '#ffffff', 
+            padding: 5,
+            align: 'center'
+        });
+            
         this.clickButton(this.playAgain, 'GamePlay');
         this.clickButton(this.goToMenu, 'HomeScene');
     }
