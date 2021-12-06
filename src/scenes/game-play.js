@@ -73,7 +73,7 @@ export class GamePlay extends Phaser.Scene {
         const sea = this.map.createLayer("sea", tileset).setCollisionByProperty({ collides: true });
         
         // player
-        this.player = this.physics.add.sprite(20, -90, null).setScale(2).refreshBody();
+        this.player = this.physics.add.sprite(20, -90, 'spritesheet.player').setScale(2).refreshBody();
 
         this.physics.add.collider(this.player, platform);
         this.physics.add.collider(this.player, sea, this.hitSea, null, this);
