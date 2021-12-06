@@ -7,15 +7,19 @@ export class GamePlay extends Phaser.Scene {
     
     preload() {
         this.load.tilemapTiledJSON("tilemap.map-01", "./assets/map-01.json");
+
         this.load.image("image.tileset", "./assets/tileset.png");
         this.load.image('image.bg', 'assets/circus.png');
-        this.load.image('bomb','assets/bomb.png')
+        this.load.image('bomb','assets/bomb.png');
+
         this.load.spritesheet('spritesheet.player', './assets/player.png', {frameWidth: 16, frameHeight: 32});
         this.load.spritesheet('spritesheet.player.sitDown', './assets/sitdown.png', {frameWidth: 16, frameHeight: 32});
+
         this.load.audio('deadSound', './assets/movie_1.mp3');
         this.load.audio('jumpSound', './assets/jump.wav');
+        this.load.audio('waterSound', './assets/water.wav');
     }
-    
+
     create() {
         // background
         this.background = this.add.image(0, 0, "image.bg").setScale(2);
@@ -23,6 +27,7 @@ export class GamePlay extends Phaser.Scene {
         //sound
         this.deadSound = this.sound.add('deadSound');
         this.jumpSound = this.sound.add('jumpSound');
+        this.waterSound = this.sound.add('waterSound');
 
         // create animations
         this.anims.create({
@@ -71,8 +76,9 @@ export class GamePlay extends Phaser.Scene {
         this.player = this.physics.add.sprite(20, -90, null).setScale(2).refreshBody();
 
         this.physics.add.collider(this.player, platform);
+        this.physics.add.collider(this.player, sea, this.hitSea, null, this);
 
-        this.physics.add.overlap(this.player, sea, () => console.log("da va cham"));
+        // this.physics.add.overlap(this.player, sea, () => console.log("da va cham"));
 
         this.cameras.main.startFollow(this.player);
 
@@ -86,13 +92,14 @@ export class GamePlay extends Phaser.Scene {
         this.trap1.visible = false;
         this.physics.add.collider(this.trap1, platform);
         this.physics.add.collider(this.player, this.trap1, this.hitTrap, null, this);
+
         this.bomb = this.physics.add.staticGroup().create(300, -50, 'bomb');
         this.bomb.visible = false
         this.physics.add.collider(this.player, this.bomb, this.hitTrap, null, this); 
     }
 
     update() {
-        if(this.player.y > 700) {
+        if(this.player.y > 400) {
             this.gameOver();
         }
 
@@ -133,14 +140,19 @@ export class GamePlay extends Phaser.Scene {
     }
 
     hitTrap(player, trap){
-        trap.visible = true
+        trap.visible = true;
+        this.deadSound.play();
         this.gameOver();
     };
+
+    hitSea(){
+        this.waterSound.play();
+        this.gameOver();
+    }
 
     gameOver(){
         this.physics.pause();
         this.player.play('player.dead', true).setTint(0xff0000);
-        this.deadSound.play();
 
         this.playAgain = this.add.image(this.player.x - 190, this.player.y + 15, 'button').setScale(0.5).setOrigin(0, 0);
         this.goToMenu = this.add.image(this.player.x + 32, this.player.y + 15, 'button').setScale(0.5).setOrigin(0, 0);
