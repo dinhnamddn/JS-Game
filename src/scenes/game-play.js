@@ -13,12 +13,12 @@ export class GamePlay extends Phaser.Scene {
         this.load.spritesheet('spritesheet.player', './assets/player.png', {frameWidth: 16, frameHeight: 32});
         this.load.spritesheet('spritesheet.player.sitDown', './assets/sitdown.png', {frameWidth: 16, frameHeight: 32});
         this.load.audio('deadSound', './assets/movie_1.mp3');
-        this.load.audio('jumpSound', './assets/getscore.mp3');
-        // this.load.image('button', './assets/button.png');
+        this.load.audio('jumpSound', './assets/jump.wav');
     }
+    
     create() {
         // background
-        this.bg = this.add.image(0, 0, "image.bg").setScale(2);
+        this.background = this.add.image(0, 0, "image.bg").setScale(2);
 
         //sound
         this.deadSound = this.sound.add('deadSound');
@@ -68,7 +68,7 @@ export class GamePlay extends Phaser.Scene {
         const sea = this.map.createLayer("sea", tileset).setCollisionByProperty({ collides: true });
         
         // player
-        this.player = this.physics.add.sprite(20, -90, null).setScale(2);
+        this.player = this.physics.add.sprite(20, -90, null).setScale(2).refreshBody();
 
         this.physics.add.collider(this.player, platform);
 
@@ -92,21 +92,25 @@ export class GamePlay extends Phaser.Scene {
     }
 
     update() {
+        if(this.player.y > 700) {
+            this.gameOver();
+        }
+
         //player's movement
         let player_velocity = 140;
 
         if (this.cursors.left.isDown) {
             this.player.setVelocityX(-1 * player_velocity);
             this.player.play("anims.player-left", true);
-            } else if (this.cursors.right.isDown) {
-                this.player.setVelocityX(player_velocity);
-                this.player.play("anims.player-right", true);
-                } else if (this.cursors.down.isDown && this.player.body.onFloor()) {
-                    this.player.play("anims.player-sitDown", true);
-                    } else {
-                        this.player.setVelocityX(0);
-                        this.player.play("anims.player-idle", true);
-                    }
+        } else if (this.cursors.right.isDown) {
+            this.player.setVelocityX(player_velocity);
+            this.player.play("anims.player-right", true);
+        } else if (this.cursors.down.isDown && this.player.body.onFloor()) {
+            this.player.play("anims.player-sitDown", true);
+        } else {
+            this.player.setVelocityX(0);
+            this.player.play("anims.player-idle", true);
+        }
 
         if (this.cursors.up.isDown && this.player.body.onFloor())
         {
@@ -115,17 +119,19 @@ export class GamePlay extends Phaser.Scene {
         } 
         
         //background's movement
-        this.bg.setPosition(this.player.x, this.player.y);
+        this.background.setPosition(this.player.x, this.player.y);
+
+        //trap
         if(250 < this.player.x && this.player.x < 320 && this.player.y < -30){
             this.bomb.visible = true;
         }
 
-        //trap
         if(this.player.x > 306){
             this.trap1.visible = true;
             this.trap1.enableBody();
         }
     }
+
     hitTrap(player, trap){
         trap.visible = true
         this.gameOver();
