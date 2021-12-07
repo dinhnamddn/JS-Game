@@ -11,6 +11,7 @@ export class GamePlay extends Phaser.Scene {
         this.load.image("image.tileset", "./assets/tileset.png");
         this.load.image('image.bg', 'assets/circus.png');
         this.load.image('bomb','assets/bomb.png');
+        this.load.image('cycle','assets/cycle.png');
 
         this.load.spritesheet('spritesheet.player', './assets/player.png', {frameWidth: 16, frameHeight: 32});
         this.load.spritesheet('spritesheet.player.sitDown', './assets/sitdown.png', {frameWidth: 16, frameHeight: 32});
@@ -73,21 +74,28 @@ export class GamePlay extends Phaser.Scene {
         const sea = this.map.createLayer("sea", tileset).setCollisionByProperty({ collides: true });
         const trap = this.map.createLayer("trapon", tileset).setCollisionByProperty({ collides: true });
         const fake = this.map.createLayer("fake", tileset).setCollisionByProperty({ collides: true });
+        const final = this.map.createLayer("final", tileset).setCollisionByProperty({ collides: true });
+        const blackFlag = this.map.createLayer("blackflag", tileset).setCollisionByProperty({ collides: true });
+        const redFlag = this.map.createLayer("redflag", tileset).setCollisionByProperty({ collides: true });
         
         // player
         this.player = this.physics.add.sprite(20, -90, 'spritesheet.player').setScale(2).refreshBody();
 
         this.physics.add.collider(this.player, platform);
+        this.physics.add.collider(this.player, final);
+        this.physics.add.collider(this.player, blackFlag, this.hitCheckPoint, null, this);
+        this.physics.add.collider(this.player, redFlag, this.hitRedFlag, null, this);
+        
+        this.cameras.main.startFollow(this.player);
+        
+        this.cursors = this.input.keyboard.createCursorKeys();
+        
+        this.add.text(0, -150, '>>>>', {font: 'bold 50px consolas', fill: '#009DAE', align: 'center'}).setRotation(0);
+        
+        //trap
         this.physics.add.collider(this.player, sea, this.hitSea, null, this);
         this.physics.add.collider(this.player, trap, this.hitTrap, null, this);
 
-        this.cameras.main.startFollow(this.player);
-
-        this.cursors = this.input.keyboard.createCursorKeys();
-
-        this.add.text(-25, -150, '>>>>', {font: 'bold 50px consolas', fill: '#009DAE', align: 'center'}).setRotation(0);
-        
-        //trap
         this.trap1 = this.physics.add.sprite(350, -300, 'bomb');
         this.trap1.disableBody();
         this.trap1.visible = false;
@@ -178,5 +186,33 @@ export class GamePlay extends Phaser.Scene {
         button.on('pointerdown', ()=>{
             this.scene.start(scene);
         })
+    }
+
+    hitRedFlag(){
+        this.physics.pause();
+
+        this.close = this.add.image(this.player.x - 46, this.player.y + 30, "button").setScale(0.3).setOrigin(0, 0);
+        
+        this.text0 = this.add.text(this.player.x - 28, this.player.y + 40, "CLOSE", {font: "20px consolas", fill: "#ffffff"});
+        this.text1 = this.add.text(this.player.x - 131, this.player.y - 120, "This is a fake goal.\n" + "Come back to the start place\n" + "and go to the left side to find\n" + "the way go to the goal.", 
+        {
+            font: "15px consolas",
+            fill: "#ffffff",
+            backgroundColor: "blue",
+            padding: 5,
+            align: "center"
+        });
+
+        this.close.setInteractive();
+        this.close.on("pointerdown", () => {
+            this.close.visible = false;
+            this.text0.visible = false;
+            this.text1.visible = false;
+            this.physics.resume()
+        })
+    }
+
+    hitCheckPoint(){
+
     }
 }
