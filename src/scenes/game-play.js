@@ -19,9 +19,15 @@ export class GamePlay extends Phaser.Scene {
         this.load.audio('deadSound', './assets/movie_1.mp3');
         this.load.audio('jumpSound', './assets/jump.wav');
         this.load.audio('waterSound', './assets/water.wav');
+        this.load.audio('winSound', './assets/done.wav');
     }
 
     create() {
+        let player_location_x = 0;
+        let player_location_y = 0;
+
+        let player_alive = false;
+
         // background
         this.background = this.add.image(0, 0, "image.bg").setScale(2);
 
@@ -29,6 +35,7 @@ export class GamePlay extends Phaser.Scene {
         this.deadSound = this.sound.add('deadSound');
         this.jumpSound = this.sound.add('jumpSound');
         this.waterSound = this.sound.add('waterSound');
+        this.winSound = this.sound.add('winSound');
 
         // create animations
         this.anims.create({
@@ -82,7 +89,7 @@ export class GamePlay extends Phaser.Scene {
         this.player = this.physics.add.sprite(20, -90, 'spritesheet.player').setScale(2).refreshBody();
 
         this.physics.add.collider(this.player, platform);
-        this.physics.add.collider(this.player, final);
+        this.physics.add.collider(this.player, final, this.hitGoal, null, this);
         this.physics.add.collider(this.player, blackFlag, this.hitCheckPoint, null, this);
         this.physics.add.collider(this.player, redFlag, this.hitRedFlag, null, this);
         
@@ -148,37 +155,46 @@ export class GamePlay extends Phaser.Scene {
         }
     }
 
-    hitTrap(player, trap){
-        trap.visible = true;
+    hitTrap(){
         this.deadSound.play();
-        this.gameOver();
+        if(this.player_alive == true) {
+            this.player.setPosition(this.player_location_x, this.player_location_y);
+        } else {
+            this.player.play('player.dead', true).setTint(0xff0000);
+            this.gameOver(" OOP ");
+        }
     };
 
     hitSea(){
         this.waterSound.play();
-        this.gameOver();
+        if(this.player_alive == true) {
+            this.player.setPosition(this.player_location_x, this.player_location_y);
+        } else {
+            this.player.play('player.dead', true).setTint(0xff0000);
+            this.gameOver(" OOP ");
+        }
     }
 
-    gameOver(){
-        this.physics.pause();
-        this.player.play('player.dead', true).setTint(0xff0000);
+    gameOver(text){
+            this.physics.pause();
 
-        this.playAgain = this.add.image(this.player.x - 190, this.player.y + 15, 'button').setScale(0.5).setOrigin(0, 0);
-        this.goToMenu = this.add.image(this.player.x + 32, this.player.y + 15, 'button').setScale(0.5).setOrigin(0, 0);
+            this.playAgain = this.add.image(this.player.x - 190, this.player.y + 15, 'button').setScale(0.5).setOrigin(0, 0);
+            this.goToMenu = this.add.image(this.player.x + 32, this.player.y + 15, 'button').setScale(0.5).setOrigin(0, 0);
+                    
+            this.add.text(this.player.x - 170, this.player.y + 40, 'PLAY AGAIN', {font: 'bold 20px consolas', fill: '#ffffff', align: 'center'});
+            this.add.text(this.player.x + 87, this.player.y + 40, 'HOME', {font: 'bold 20px consolas', fill: '#ffffff', align: 'center'});
+            this.add.text(this.player.x - 100, this.player.y - 120, text, 
+            { 
+                font: 'bold 70px consolas',
+                backgroundColor: '#F90716', 
+                fill: '#ffffff', 
+                padding: 5,
+                align: 'center'
+            });
                 
-        this.add.text(this.player.x - 170, this.player.y + 40, 'PLAY AGAIN', {font: 'bold 20px consolas', fill: '#ffffff', align: 'center'});
-        this.add.text(this.player.x + 87, this.player.y + 40, 'HOME', {font: 'bold 20px consolas', fill: '#ffffff', align: 'center'});
-        this.add.text(this.player.x - 120, this.player.y - 120, 'STUPID', 
-        { 
-            font: 'bold 70px consolas',
-            backgroundColor: '#F90716', 
-            fill: '#ffffff', 
-            padding: 5,
-            align: 'center'
-        });
-            
-        this.clickButton(this.playAgain, 'GamePlay');
-        this.clickButton(this.goToMenu, 'HomeScene');
+            this.clickButton(this.playAgain, 'GamePlay');
+            this.clickButton(this.goToMenu, 'HomeScene');
+        
     }
 
     clickButton(button, scene){
@@ -213,6 +229,14 @@ export class GamePlay extends Phaser.Scene {
     }
 
     hitCheckPoint(){
+        this.player_location_x = this.player.x;
+        this.player_location_y = this.player.y;
+        this.player_alive = true;
+    }
 
+    hitGoal(){
+        this.physics.pause();
+        this.winSound.play();
+        this.gameOver(" WIN ");
     }
 }
