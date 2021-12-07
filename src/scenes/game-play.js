@@ -71,14 +71,15 @@ export class GamePlay extends Phaser.Scene {
         const tileset = this.map.addTilesetImage("tileset", "image.tileset");
         const platform = this.map.createLayer("platform", tileset).setCollisionByProperty({ collides: true });
         const sea = this.map.createLayer("sea", tileset).setCollisionByProperty({ collides: true });
+        const trap = this.map.createLayer("trapon", tileset).setCollisionByProperty({ collides: true });
+        const fake = this.map.createLayer("fake", tileset).setCollisionByProperty({ collides: true });
         
         // player
         this.player = this.physics.add.sprite(20, -90, 'spritesheet.player').setScale(2).refreshBody();
 
         this.physics.add.collider(this.player, platform);
         this.physics.add.collider(this.player, sea, this.hitSea, null, this);
-
-        // this.physics.add.overlap(this.player, sea, () => console.log("da va cham"));
+        this.physics.add.collider(this.player, trap, this.hitTrap, null, this);
 
         this.cameras.main.startFollow(this.player);
 
@@ -104,7 +105,7 @@ export class GamePlay extends Phaser.Scene {
         }
 
         //player's movement
-        let player_velocity = 140;
+        let player_velocity = 145;
 
         if (this.cursors.left.isDown) {
             this.player.setVelocityX(-1 * player_velocity);
@@ -112,8 +113,6 @@ export class GamePlay extends Phaser.Scene {
         } else if (this.cursors.right.isDown) {
             this.player.setVelocityX(player_velocity);
             this.player.play("anims.player-right", true);
-        } else if (this.cursors.down.isDown && this.player.body.onFloor()) {
-            this.player.play("anims.player-sitDown", true);
         } else {
             this.player.setVelocityX(0);
             this.player.play("anims.player-idle", true);
@@ -123,7 +122,9 @@ export class GamePlay extends Phaser.Scene {
         {
             this.jumpSound.play();
             this.player.setVelocityY(-2 * player_velocity);
-        } 
+        }  else if (this.cursors.down.isDown && this.player.body.onFloor()) {
+            this.player.play("anims.player-sitDown", true);
+        }
         
         //background's movement
         this.background.setPosition(this.player.x, this.player.y);
