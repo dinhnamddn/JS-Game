@@ -9,9 +9,8 @@ export class GamePlay extends Phaser.Scene {
         this.load.tilemapTiledJSON("tilemap.map-01", "./assets/map-01.json");
 
         this.load.image("image.tileset", "./assets/tileset.png");
-        this.load.image('image.bg', 'assets/circus.png');
+        this.load.image('image.bg', 'assets/background.png');
         this.load.image('bomb','assets/bomb.png');
-        this.load.image('cycle','assets/cycle.png');
 
         this.load.spritesheet('spritesheet.player', './assets/player.png', {frameWidth: 16, frameHeight: 32});
         this.load.spritesheet('spritesheet.player.sitDown', './assets/sitdown.png', {frameWidth: 16, frameHeight: 32});
@@ -65,14 +64,6 @@ export class GamePlay extends Phaser.Scene {
             repeat: 0,
             frameRate: 10
         })
-
-        this.anims.create({
-            key: 'player.dead',
-            frames: [{key: 'spritesheet.player', frame: 8}],
-            frameRate: 10,
-            repeat: 0
-        })
-
 
         // tilemap
         this.map = this.add.tilemap("tilemap.map-01");
@@ -160,7 +151,7 @@ export class GamePlay extends Phaser.Scene {
         if(this.player_alive == true) {
             this.delayGame();
         } else {
-            this.player.play('player.dead', true).setTint(0xff0000);
+            this.player.setTint(0xff0000);
             this.gameOver(" OOP ");
         }
     };
@@ -170,7 +161,7 @@ export class GamePlay extends Phaser.Scene {
         if(this.player_alive == true) {
             this.delayGame();
         } else {
-            this.player.play('player.dead', true).setTint(0xff0000);
+            this.player.setTint(0xff0000);
             this.gameOver(" OOP ");
         }
     }
