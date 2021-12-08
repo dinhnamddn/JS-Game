@@ -181,7 +181,7 @@ export class GamePlay extends Phaser.Scene {
 
     update() {
         if (this.player.y > 400) {
-            this.gameOver();
+            this.gameOver(" OOP ");
         }
 
         //player's movement
@@ -222,7 +222,7 @@ export class GamePlay extends Phaser.Scene {
 
         //kill yourself
         if (this.keyF.isDown) {
-            this.gameOver();
+            this.gameOver(" OOP ");
         }
     }
 
