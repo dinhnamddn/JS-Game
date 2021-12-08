@@ -31,6 +31,7 @@ export class GamePlay extends Phaser.Scene {
         this.load.audio("jumpSound", "./assets/jump.wav");
         this.load.audio("waterSound", "./assets/water.wav");
         this.load.audio("winSound", "./assets/done.wav");
+        this.load.audio("meoSound", "./assets/meo.wav");
     }
 
     create() {
@@ -47,6 +48,7 @@ export class GamePlay extends Phaser.Scene {
         this.jumpSound = this.sound.add("jumpSound");
         this.waterSound = this.sound.add("waterSound");
         this.winSound = this.sound.add("winSound");
+        this.giveUpSound = this.sound.add("meoSound");
 
         // create animations
         this.anims.create({
@@ -181,6 +183,7 @@ export class GamePlay extends Phaser.Scene {
 
     update() {
         if (this.player.y > 400) {
+            this.deadSound.play();
             this.gameOver(" OOP ");
         }
 
@@ -222,6 +225,7 @@ export class GamePlay extends Phaser.Scene {
 
         //kill yourself
         if (this.keyF.isDown) {
+            this.giveUpSound,play();
             this.gameOver(" OOP ");
         }
     }
