@@ -158,7 +158,7 @@ export class GamePlay extends Phaser.Scene {
     hitTrap(){
         this.deadSound.play();
         if(this.player_alive == true) {
-            this.player.setPosition(this.player_location_x, this.player_location_y);
+            this.delayGame();
         } else {
             this.player.play('player.dead', true).setTint(0xff0000);
             this.gameOver(" OOP ");
@@ -168,7 +168,7 @@ export class GamePlay extends Phaser.Scene {
     hitSea(){
         this.waterSound.play();
         if(this.player_alive == true) {
-            this.player.setPosition(this.player_location_x, this.player_location_y);
+            this.delayGame();
         } else {
             this.player.play('player.dead', true).setTint(0xff0000);
             this.gameOver(" OOP ");
@@ -176,24 +176,24 @@ export class GamePlay extends Phaser.Scene {
     }
 
     gameOver(text){
-            this.physics.pause();
+        this.physics.pause();
 
-            this.playAgain = this.add.image(this.player.x - 190, this.player.y + 15, 'button').setScale(0.5).setOrigin(0, 0);
-            this.goToMenu = this.add.image(this.player.x + 32, this.player.y + 15, 'button').setScale(0.5).setOrigin(0, 0);
+        this.playAgain = this.add.image(this.player.x - 190, this.player.y + 15, 'button').setScale(0.5).setOrigin(0, 0);
+        this.goToMenu = this.add.image(this.player.x + 32, this.player.y + 15, 'button').setScale(0.5).setOrigin(0, 0);
                     
-            this.add.text(this.player.x - 170, this.player.y + 40, 'PLAY AGAIN', {font: 'bold 20px consolas', fill: '#ffffff', align: 'center'});
-            this.add.text(this.player.x + 87, this.player.y + 40, 'HOME', {font: 'bold 20px consolas', fill: '#ffffff', align: 'center'});
-            this.add.text(this.player.x - 100, this.player.y - 120, text, 
-            { 
-                font: 'bold 70px consolas',
-                backgroundColor: '#F90716', 
-                fill: '#ffffff', 
-                padding: 5,
-                align: 'center'
-            });
-                
-            this.clickButton(this.playAgain, 'GamePlay');
-            this.clickButton(this.goToMenu, 'HomeScene');
+        this.add.text(this.player.x - 170, this.player.y + 40, 'PLAY AGAIN', {font: 'bold 20px consolas', fill: '#ffffff', align: 'center'});
+        this.add.text(this.player.x + 87, this.player.y + 40, 'HOME', {font: 'bold 20px consolas', fill: '#ffffff', align: 'center'});
+        this.add.text(this.player.x - 100, this.player.y - 120, text, 
+        { 
+            font: 'bold 70px consolas',
+            backgroundColor: '#F90716', 
+            fill: '#ffffff', 
+            padding: 5,
+            align: 'center'
+        });
+            
+        this.clickButton(this.playAgain, 'GamePlay');
+        this.clickButton(this.goToMenu, 'HomeScene');
         
     }
 
@@ -240,5 +240,21 @@ export class GamePlay extends Phaser.Scene {
         this.physics.pause();
         this.winSound.play();
         this.gameOver(" WIN ");
+    }
+
+    delayGame(){
+        this.physics.pause();
+
+        this.closeDelay = this.add.image(this.player.x - 48, this.player.y + 45, "button").setScale(0.3).setOrigin(0, 0);
+
+        this.text2 = this.add.text(this.player.x - 27, this.player.y + 57, "RESUME", {font: "15px consolas", fill: "#ffffff"});
+
+        this.closeDelay.setInteractive();
+        this.closeDelay.on("pointerdown", () => {
+            this.closeDelay.visible = false;
+            this.text2.visible = false;
+            this.physics.resume()
+            this.player.setPosition(this.player_location_x, this.player_location_y);
+        })
     }
 }
