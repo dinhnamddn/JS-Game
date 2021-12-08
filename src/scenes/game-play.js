@@ -21,11 +21,6 @@ export class GamePlay extends Phaser.Scene {
             frameWidth: 16,
             frameHeight: 32,
         });
-        this.load.spritesheet(
-            "spritesheet.player.sitDown",
-            "./assets/sitdown.png",
-            { frameWidth: 16, frameHeight: 32 }
-        );
 
         this.load.audio("deadSound", "./assets/movie_1.mp3");
         this.load.audio("jumpSound", "./assets/jump.wav");
@@ -81,20 +76,6 @@ export class GamePlay extends Phaser.Scene {
             }),
             frameRate: 10,
             repeat: -1,
-        });
-
-        this.anims.create({
-            key: "anims.player-sitDown",
-            frames: [{ key: "spritesheet.player.sitDown", frame: 2 }],
-            repeat: 0,
-            frameRate: 10,
-        });
-
-        this.anims.create({
-            key: "player.dead",
-            frames: [{ key: "spritesheet.player", frame: 8 }],
-            frameRate: 10,
-            repeat: 0,
         });
 
         // tilemap
@@ -191,7 +172,7 @@ export class GamePlay extends Phaser.Scene {
             this.deadSound.play();
             this.gameOver(" OOP ");
         }
-
+        
         //player's movement
         let player_velocity = 140;
 
