@@ -16,6 +16,7 @@ export class GamePlay extends Phaser.Scene {
     this.load.image("trap.up", "assets/trap_up.png");
     this.load.image("trap.left", "assets/trap_left.png");
     this.load.image("trap.fire", "assets/trap_fire.png");
+    
     this.load.spritesheet("spritesheet.player", "./assets/player.png", {
       frameWidth: 16,
       frameHeight: 32,
@@ -213,22 +214,22 @@ export class GamePlay extends Phaser.Scene {
 
   hitTrap() {
     this.deadSound.play();
-    if (this.player_alive == true) {
-      this.player.setPosition(this.player_location_x, this.player_location_y);
-    } else {
-      this.player.play("player.dead", true).setTint(0xff0000);
-      this.gameOver(" OOPS ");
-    }
+        this.player.setTint(0xff0000);
+        if(this.player_alive == true) {
+            this.delayGame();
+        } else {
+            this.gameOver(" OOP ");
+        }
   }
 
   hitSea() {
     this.waterSound.play();
-    if (this.player_alive == true) {
-      this.player.setPosition(this.player_location_x, this.player_location_y);
-    } else {
-      this.player.play("player.dead", true).setTint(0xff0000);
-      this.gameOver(" OOPS ");
-    }
+        this.player.setTint(0xff0000);
+        if(this.player_alive == true) {
+            this.delayGame();
+        } else {
+            this.gameOver(" OOP ");
+        }
   }
 
   gameOver(text) {
@@ -309,10 +310,11 @@ export class GamePlay extends Phaser.Scene {
       this.text1.visible = false;
       this.physics.resume();
     });
+    this.hitCheckPoint();
   }
 
   hitCheckPoint() {
-    this.player_location_x = this.player.x;
+    this.player_location_x = this.player.x - 32;
     this.player_location_y = this.player.y;
     this.player_alive = true;
   }
@@ -322,6 +324,24 @@ export class GamePlay extends Phaser.Scene {
     this.winSound.play();
     this.gameOver(" WIN ");
   }
+
+  delayGame(){
+    this.physics.pause();
+
+    this.closeDelay = this.add.image(this.player.x - 48, this.player.y + 45, "button").setScale(0.3).setOrigin(0, 0);
+
+    this.text2 = this.add.text(this.player.x - 27, this.player.y + 57, "RESUME", {font: "15px consolas", fill: "#ffffff"});
+
+    this.closeDelay.setInteractive();
+    this.closeDelay.on("pointerdown", () => {
+        this.closeDelay.visible = false;
+        this.text2.visible = false;
+        this.physics.resume()
+        this.player.setTint(0xffffff);
+        this.player.setPosition(this.player_location_x, this.player_location_y);
+    })
+}
+
   createTrap(platform) {
     this.trap2 = this.physics.add.sprite(800, -288, "bomb");
     this.trap2.disableBody();
