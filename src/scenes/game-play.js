@@ -18,8 +18,8 @@ export class GamePlay extends Phaser.Scene {
         this.load.image("wood", "assets/platform.png");
 
         this.load.spritesheet("spritesheet.player", "./assets/player.png", {
-            frameWidth: 16,
-            frameHeight: 32,
+            frameWidth: 32,
+            frameHeight: 64,
         });
 
         this.load.audio("deadSound", "./assets/movie_1.mp3");
@@ -51,8 +51,8 @@ export class GamePlay extends Phaser.Scene {
         this.anims.create({
             key: "anims.player-left",
             frames: this.anims.generateFrameNumbers("spritesheet.player", {
-                start: 4,
-                end: 7,
+                start: 0,
+                end: 4,
             }),
             frameRate: 10,
             repeat: -1,
@@ -61,8 +61,8 @@ export class GamePlay extends Phaser.Scene {
         this.anims.create({
             key: "anims.player-right",
             frames: this.anims.generateFrameNumbers("spritesheet.player", {
-                start: 12,
-                end: 15,
+                start: 9,
+                end: 13,
             }),
             frameRate: 10,
             repeat: -1,
@@ -71,8 +71,8 @@ export class GamePlay extends Phaser.Scene {
         this.anims.create({
             key: "anims.player-idle",
             frames: this.anims.generateFrameNumbers("spritesheet.player", {
-                start: 8,
-                end: 11,
+                start: 5,
+                end: 8,
             }),
             frameRate: 10,
             repeat: -1,
@@ -106,7 +106,7 @@ export class GamePlay extends Phaser.Scene {
         // player
         this.player = this.physics.add
             .sprite(20, -90, "spritesheet.player")
-            .setScale(2)
+            .setScale(1)
             .refreshBody();
 
         this.physics.add.collider(this.player, platform);

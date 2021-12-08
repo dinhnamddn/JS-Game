@@ -9,7 +9,7 @@ export default class HomeScene extends Phaser.Scene{
         this.load.image('background', './assets/trapoutdoor2.png');
         this.load.image('button', './assets/button.png');
 
-        this.load.spritesheet('player', './assets/player.png', {frameWidth: 16, frameHeight: 32});
+        this.load.spritesheet('player', './assets/player.png', {frameWidth: 32, frameHeight: 64});
         
         this.load.audio('background-sound', './assets/backgroundsound.mp3');
     }
@@ -29,9 +29,9 @@ export default class HomeScene extends Phaser.Scene{
             repeat: -1
         })
 
-        this.add.sprite(382, 295, null).setScale(3).play('anims-player');
-        this.add.sprite(482, 295, null).setScale(3).play('anims-player');
-        this.add.sprite(582, 295, null).setScale(3).play('anims-player');
+        this.add.sprite(382, 295, null).setScale(1.5).play('anims-player');
+        this.add.sprite(482, 295, null).setScale(1.5).play('anims-player');
+        this.add.sprite(582, 295, null).setScale(1.5).play('anims-player');
 
         this.add.text(355, 145, 'PLAY', {font: 'bold 22px consolas', fill: '#ffffff', align: 'center'});
         this.add.text(535, 145, 'TUTORIAL', {font: 'bold 22px consolas', fill: '#ffffff', align: 'center'});
