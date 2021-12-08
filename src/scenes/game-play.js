@@ -129,7 +129,7 @@ export class GamePlay extends Phaser.Scene {
             .refreshBody();
 
         this.physics.add.collider(this.player, platform);
-        this.physics.add.collider(this.player, this.wood, this.hitTrap, null, this);
+        this.physics.add.collider(this.player, this.wood, this.hitWood, null, this);
         this.physics.add.collider(this.player, final, this.hitGoal, null, this);
         this.physics.add.collider(
             this.player,
@@ -253,6 +253,12 @@ export class GamePlay extends Phaser.Scene {
         } else {
             this.gameOver(" OOP ");
         }
+    }
+
+    hitWood(){
+        this.deadSound.play();
+        this.player.setTint(0xff0000);
+        this.gameOver(">>>>>");
     }
 
     gameOver(text) {
