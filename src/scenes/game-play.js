@@ -173,6 +173,10 @@ export class GamePlay extends Phaser.Scene {
         this.bomb.visible = false;
         this.physics.add.collider(this.player, this.bomb, this.hitTrap, null, this);
         this.createTrap(platform);
+
+        //create key
+        this.keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        this.keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
     }
 
     update() {
@@ -209,7 +213,17 @@ export class GamePlay extends Phaser.Scene {
             this.bomb.visible = true;
         }
         this.checkNearTrap();
-        console.log(this.player.x + "  " + this.player.y);
+        // console.log(this.player.x + "  " + this.player.y);
+
+        //back door
+        if (this.keyP.isDown) {
+            this.hitCheckPoint();
+        }
+
+        //kill yourself
+        if (this.keyF.isDown) {
+            this.gameOver();
+        }
     }
 
     hitTrap() {
