@@ -11,11 +11,11 @@ export class GamePlay extends Phaser.Scene {
         this.load.image("image.tileset", "./assets/tileset.png");
         this.load.image("image.bg", "assets/background.png");
         this.load.image("bomb", "assets/bomb.png");
-        this.load.image("cycle", "assets/cycle.png");
         this.load.image("trap.down", "assets/trap_down.png");
         this.load.image("trap.up", "assets/trap_up.png");
         this.load.image("trap.left", "assets/trap_left.png");
         this.load.image("trap.fire", "assets/trap_fire.png");
+        this.load.image("wood", "assets/platform.png");
 
         this.load.spritesheet("spritesheet.player", "./assets/player.png", {
             frameWidth: 16,
@@ -42,6 +42,8 @@ export class GamePlay extends Phaser.Scene {
 
         // background
         this.background = this.add.image(0, 0, "image.bg").setScale(2);
+        this.wood = this.physics.add.staticGroup();
+        this.wood1 = this.wood.create(-250, -10, "wood");
 
         //sound
         this.deadSound = this.sound.add("deadSound");
@@ -127,7 +129,7 @@ export class GamePlay extends Phaser.Scene {
             .refreshBody();
 
         this.physics.add.collider(this.player, platform);
-        this.physics.add.collider(this.player, this.wood);
+        this.physics.add.collider(this.player, this.wood, this.hitTrap, null, this);
         this.physics.add.collider(this.player, final, this.hitGoal, null, this);
         this.physics.add.collider(
             this.player,
@@ -177,8 +179,7 @@ export class GamePlay extends Phaser.Scene {
         this.physics.add.collider(this.player, this.bomb, this.hitTrap, null, this);
         this.createTrap(platform);
 
-        
-        this.add.text(4084, -585, ">>>PRESS F<<<", {font: "bold 20px consolas", fill: "#ff0000"});
+        this.add.text(4084, -585, ">>>PRESS F<<<", { font: "bold 20px consolas", fill: "#ff0000" });
 
         //create key
         this.keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -335,6 +336,7 @@ export class GamePlay extends Phaser.Scene {
             this.physics.resume();
         });
         this.hitCheckPoint();
+        this.wood1.disableBody();
     }
 
     hitCheckPoint() {
