@@ -328,9 +328,9 @@ export class GamePlay extends Phaser.Scene {
     delayGame() {
         this.physics.pause();
 
-        this.closeDelay = this.add.image(this.player.x - 48, this.player.y + 45, "button").setScale(0.3).setOrigin(0, 0);
+        this.closeDelay = this.add.image(this.player.x - 48, this.player.y + 43, "button").setScale(0.3).setOrigin(0, 0);
 
-        this.text2 = this.add.text(this.player.x - 27, this.player.y + 57, "RESUME", { font: "15px consolas", fill: "#ffffff" });
+        this.text2 = this.add.text(this.player.x - 27, this.player.y + 55, "RESUME", { font: "15px consolas", fill: "#ffffff" });
 
         this.closeDelay.setInteractive();
         this.closeDelay.on("pointerdown", () => {
