@@ -176,9 +176,13 @@ export class GamePlay extends Phaser.Scene {
         this.physics.add.collider(this.player, this.bomb, this.hitTrap, null, this);
         this.createTrap(platform);
 
+        
+        this.add.text(4484, -585, ">>>PRESS SPACE<<<", {font: "bold 20px consolas", fill: "#ff0000"});
+
         //create key
         this.keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         this.keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+        this.keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
     update() {
@@ -216,7 +220,11 @@ export class GamePlay extends Phaser.Scene {
             this.bomb.visible = true;
         }
         this.checkNearTrap();
-        // console.log(this.player.x + "  " + this.player.y);
+        console.log(this.player.x + "  " + this.player.y);
+
+        if (this.keySPACE.isDown) {
+            this.hitTrap();
+        }
 
         //back door
         if (this.keyP.isDown) {
