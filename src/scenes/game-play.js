@@ -225,7 +225,7 @@ export class GamePlay extends Phaser.Scene {
 
         //back door
         if (this.keyP.isDown) {
-            this.hitCheckPoint();
+            this.hitRedFlag();
         }
 
         //kill yourself
