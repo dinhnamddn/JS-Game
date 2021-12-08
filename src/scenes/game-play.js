@@ -226,10 +226,12 @@ export class GamePlay extends Phaser.Scene {
             this.text1.visible = false;
             this.physics.resume()
         })
+
+        this.hitCheckPoint();
     }
 
     hitCheckPoint(){
-        this.player_location_x = this.player.x;
+        this.player_location_x = this.player.x - 32;
         this.player_location_y = this.player.y;
         this.player_alive = true;
     }
