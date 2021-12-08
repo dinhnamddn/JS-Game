@@ -9,14 +9,14 @@ export class GamePlay extends Phaser.Scene {
     this.load.tilemapTiledJSON("tilemap.map-01", "./assets/map-01.json");
 
     this.load.image("image.tileset", "./assets/tileset.png");
-    this.load.image("image.bg", "assets/circus.png");
+    this.load.image("image.bg", "assets/background.png");
     this.load.image("bomb", "assets/bomb.png");
     this.load.image("cycle", "assets/cycle.png");
     this.load.image("trap.down", "assets/trap_down.png");
     this.load.image("trap.up", "assets/trap_up.png");
     this.load.image("trap.left", "assets/trap_left.png");
     this.load.image("trap.fire", "assets/trap_fire.png");
-    
+
     this.load.spritesheet("spritesheet.player", "./assets/player.png", {
       frameWidth: 16,
       frameHeight: 32,

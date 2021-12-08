@@ -8,7 +8,9 @@ export default class HomeScene extends Phaser.Scene{
     preload(){
         this.load.image('background', './assets/trapoutdoor2.png');
         this.load.image('button', './assets/button.png');
+
         this.load.spritesheet('player', './assets/player.png', {frameWidth: 16, frameHeight: 32});
+        
         this.load.audio('background-sound', './assets/backgroundsound.mp3');
     }
 
