@@ -127,6 +127,7 @@ export class GamePlay extends Phaser.Scene {
             .refreshBody();
 
         this.physics.add.collider(this.player, platform);
+        this.physics.add.collider(this.player, this.wood);
         this.physics.add.collider(this.player, final, this.hitGoal, null, this);
         this.physics.add.collider(
             this.player,
@@ -177,12 +178,11 @@ export class GamePlay extends Phaser.Scene {
         this.createTrap(platform);
 
         
-        this.add.text(4484, -585, ">>>PRESS SPACE<<<", {font: "bold 20px consolas", fill: "#ff0000"});
+        this.add.text(4084, -585, ">>>PRESS F<<<", {font: "bold 20px consolas", fill: "#ff0000"});
 
         //create key
         this.keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         this.keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
-        this.keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
     update() {
@@ -220,11 +220,7 @@ export class GamePlay extends Phaser.Scene {
             this.bomb.visible = true;
         }
         this.checkNearTrap();
-        console.log(this.player.x + "  " + this.player.y);
-
-        if (this.keySPACE.isDown) {
-            this.hitTrap();
-        }
+        // console.log(this.player.x + "  " + this.player.y);
 
         //back door
         if (this.keyP.isDown) {
@@ -233,7 +229,7 @@ export class GamePlay extends Phaser.Scene {
 
         //kill yourself
         if (this.keyF.isDown) {
-            this.giveUpSound,play();
+            this.giveUpSound.play();
             this.gameOver(" OOP ");
         }
     }
