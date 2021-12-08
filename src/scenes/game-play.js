@@ -275,6 +275,7 @@ export class GamePlay extends Phaser.Scene {
 
     hitRedFlag() {
         this.physics.pause();
+        this.winSound.play();
 
         this.close = this.add
             .image(this.player.x - 46, this.player.y + 30, "button")
@@ -308,13 +309,14 @@ export class GamePlay extends Phaser.Scene {
             this.close.visible = false;
             this.text0.visible = false;
             this.text1.visible = false;
+            this.player.setPosition(this.player.x - 40, this.player.y - 20);
             this.physics.resume();
         });
         this.hitCheckPoint();
     }
 
     hitCheckPoint() {
-        this.player_location_x = this.player.x - 32;
+        this.player_location_x = this.player.x - 50;
         this.player_location_y = this.player.y;
         this.player_alive = true;
     }
