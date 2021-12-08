@@ -148,7 +148,7 @@ export class GamePlay extends Phaser.Scene {
     this.add
       .text(0, -150, ">>>>", {
         font: "bold 50px consolas",
-        fill: "#009DAE",
+        fill: "#ffffff",
         align: "center",
       })
       .setRotation(0);
