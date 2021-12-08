@@ -148,20 +148,20 @@ export class GamePlay extends Phaser.Scene {
 
     hitTrap(){
         this.deadSound.play();
+        this.player.setTint(0xff0000);
         if(this.player_alive == true) {
             this.delayGame();
         } else {
-            this.player.setTint(0xff0000);
             this.gameOver(" OOP ");
         }
     };
 
     hitSea(){
         this.waterSound.play();
+        this.player.setTint(0xff0000);
         if(this.player_alive == true) {
             this.delayGame();
         } else {
-            this.player.setTint(0xff0000);
             this.gameOver(" OOP ");
         }
     }
@@ -245,6 +245,7 @@ export class GamePlay extends Phaser.Scene {
             this.closeDelay.visible = false;
             this.text2.visible = false;
             this.physics.resume()
+            this.player.setTint(0xffffff);
             this.player.setPosition(this.player_location_x, this.player_location_y);
         })
     }
