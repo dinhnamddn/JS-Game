@@ -264,7 +264,7 @@ export class GamePlay extends Phaser.Scene {
             fill: "#ffffff",
             align: "center",
         });
-        this.add.text(this.player.x - 100, this.player.y - 120, text, {
+        this.add.text(this.player.x - 100, this.player.y - 135, text, {
             font: "bold 70px consolas",
             backgroundColor: "#F90716",
             fill: "#ffffff",
