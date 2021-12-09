@@ -172,7 +172,7 @@ export class GamePlay extends Phaser.Scene {
             this.deadSound.play();
             this.gameOver(" OOP ");
         }
-        
+
         //player's movement
         let player_velocity = 140;
 
@@ -236,7 +236,7 @@ export class GamePlay extends Phaser.Scene {
         }
     }
 
-    hitWood(){
+    hitWood() {
         this.deadSound.play();
         this.player.setTint(0xff0000);
         this.gameOver(">>>>>");
@@ -275,14 +275,7 @@ export class GamePlay extends Phaser.Scene {
         this.clickButton(this.playAgain, "GamePlay");
         this.clickButton(this.goToMenu, "HomeScene");
     }
-
-    clickButton(button, scene) {
-        button.setInteractive();
-        button.on("pointerdown", () => {
-            this.scene.start(scene);
-        });
-    }
-
+    
     hitRedFlag() {
         this.physics.pause();
         this.winSound.play();
@@ -330,6 +323,14 @@ export class GamePlay extends Phaser.Scene {
         this.player_location_x = this.player.x - 50;
         this.player_location_y = this.player.y;
         this.player_alive = true;
+    }
+
+    clickButton(button, scene) {
+        button.setInteractive();
+        button.on("pointerdown", () => {
+            this.player_alive = false;
+            this.scene.start(scene);
+        });
     }
 
     hitGoal() {
