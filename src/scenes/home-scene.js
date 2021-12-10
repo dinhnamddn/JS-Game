@@ -39,7 +39,7 @@ export default class HomeScene extends Phaser.Scene{
         this.playButton.setInteractive();
         this.playButton.on('pointerdown', ()=>{
             this.bg_sound.stop();
-            this.scene.start('GamePlay');
+            this.scene.start('Intro');
         })
         this.tutorialButton.setInteractive();
         this.tutorialButton.on('pointerdown', ()=>{
