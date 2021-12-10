@@ -9,7 +9,7 @@ export class GamePlay extends Phaser.Scene {
         this.load.tilemapTiledJSON("tilemap.map-01", "./assets/map-01.json");
 
         this.load.image("image.tileset", "./assets/tileset.png");
-        this.load.image("image.bg", "assets/background.png");
+        this.load.image("image.bg", "assets/background2.png");
         this.load.image("bomb", "assets/bomb.png");
         this.load.image("trap.down", "assets/trap_down.png");
         this.load.image("trap.up", "assets/trap_up.png");
@@ -195,7 +195,7 @@ export class GamePlay extends Phaser.Scene {
         }
 
         //background's movement
-        this.background.setPosition(this.player.x, this.player.y);
+        // this.background.setPosition(this.player.x, this.player.y);
 
         //trap
         if (250 < this.player.x && this.player.x < 320 && this.player.y < -30) {
